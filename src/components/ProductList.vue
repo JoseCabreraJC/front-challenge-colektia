@@ -51,6 +51,10 @@
           <label><strong>Estado:</strong></label>
           {{ currentProduct.habilitado ? "Habilitado" : "No Habilitado" }}
         </div>
+        <div>
+          <label><strong>Imagen:</strong></label>
+          <img src="currentProduct.imagen" class="img-fluid" alt="imagen" />
+        </div>
         <router-link
           :to="'/productos/' + currentProduct.id"
           class="btn btn-warning"
@@ -83,6 +87,24 @@ export default {
       ProductDataService.getAll()
         .then(response => {
           this.products = response.data;
+          this.products.map(product => {
+            console.log(product.imagen.data);
+            let bytes = new Uint8Array(product.imagen.data);
+            const url = URL.createObjectURL(
+              new Blob([bytes], { type: "image/png" })
+            );
+            // const binary = String.fromCharCode.apply(null, bytes);
+            // let base64String = btoa(binary);
+            console.log(url);
+
+            // let binary = bytes.reduce(
+            //   (data, b) => data + String.fromCharCode(b),
+            //   ""
+            // );
+            product.imagen = url;
+
+            // console.log(product.imagen);
+          });
           console.log(response.data);
         })
         .catch(e => {

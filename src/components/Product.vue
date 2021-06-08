@@ -25,6 +25,14 @@
         <label><strong>Estado:</strong></label>
         {{ currentProduct.habilitado ? "Habilitado" : "No Habilitado" }}
       </div>
+      <div>
+        <label><strong>Imagen:</strong></label>
+        <img src="currentProduct.imagen" class="img-fluid" alt="imagen" />
+      </div>
+      <div class="form-group">
+        <label><strong>Imagen:</strong></label>
+        {{ currentProduct.imagen }}
+      </div>
     </form>
 
     <button

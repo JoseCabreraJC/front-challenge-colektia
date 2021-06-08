@@ -36,7 +36,12 @@
       </div>
       <div class="mb-3">
         <label for="formFile" class="form-label">Agregar una imagen</label>
-        <input class="form-control" type="file" id="formFile" />
+        <input
+          class="form-control"
+          type="file"
+          id="formFile"
+          @change="onFileSelected"
+        />
       </div>
 
       <button @click="saveProduct" class="btn btn-success">Enviar</button>
@@ -56,26 +61,31 @@ export default {
   name: "add-product",
   data() {
     return {
+      selectedFile: null,
       producto: {
         id: null,
         nombre: "",
         descripcion: "",
         habilitado: false,
+        imagen: null,
       },
       submitted: false,
     };
   },
   methods: {
     saveProduct() {
-      var data = {
+      let data = {
         nombre: this.producto.nombre,
         descripcion: this.producto.descripcion,
         habilitado: this.producto.habilitado,
+        imagen: this.producto.imagen,
       };
+      console.log(data);
 
       ProductDataService.create(data)
         .then(response => {
           this.producto.id = response.data.id;
+          // ProductDataService;
           console.log(response.data);
           this.submitted = true;
         })
@@ -84,6 +94,14 @@ export default {
         });
     },
 
+    onFileSelected(event) {
+      console.log(event.target.files[0]);
+      // let fd = new FormData();
+      this.selectedFile = event.target.files[0];
+      this.producto.imagen = this.selectedFile;
+      // fd.append("file", this.selectedFile);
+      // console.log(Array.from(fd));
+    },
     newProduct() {
       this.submitted = false;
       this.producto = {};

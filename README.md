@@ -1,24 +1,29 @@
 # colektia-front
 
-## Project setup
+## Antes de ejecutar
+
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Compila y hot-reload para desarrollo, corre el puerto 8081
+
 ```
 npm run serve
 ```
 
 ### Compiles and minifies for production
+
 ```
 npm run build
 ```
 
 ### Lints and fixes files
+
 ```
 npm run lint
 ```
 
 ### Customize configuration
+
 See [Configuration Reference](https://cli.vuejs.org/config/).
