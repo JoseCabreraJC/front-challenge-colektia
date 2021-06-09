@@ -56,6 +56,7 @@
 
 <script>
 import ProductDataService from "../services/ProductDataService";
+// import ImageDataService from "../services/ImageDataService";
 
 export default {
   name: "add-product",
@@ -85,8 +86,8 @@ export default {
       ProductDataService.create(data)
         .then(response => {
           this.producto.id = response.data.id;
-          // ProductDataService;
-          console.log(response.data);
+          // ImageDataService.create(this.producto.imagen);
+          // console.log(response.data);
           this.submitted = true;
         })
         .catch(e => {

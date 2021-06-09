@@ -28,10 +28,9 @@
       <div>
         <label><strong>Imagen:</strong></label>
         <img src="currentProduct.imagen" class="img-fluid" alt="imagen" />
-      </div>
-      <div class="form-group">
-        <label><strong>Imagen:</strong></label>
-        {{ currentProduct.imagen }}
+        <label
+          ><strong>{{ currentProduct.imagen }}</strong></label
+        >
       </div>
     </form>
 
@@ -45,6 +44,24 @@
     <button v-else class="btn btn-primary mr-2" @click="updateHabilitado(true)">
       Habilitar
     </button>
+    <button class="btn btn-warning mr" @click="$refs.file.click()">
+      {{ currentProduct.imagen == null ? "Agregar Imagen" : "Cambiar Imagen" }}
+    </button>
+    <button
+      v-if="currentProduct.imagen"
+      class="btn btn-danger mr"
+      @click="deleteImage"
+    >
+      Borrar Imagen
+    </button>
+    <input
+      @change="onFileSelected"
+      ref="file"
+      class="form-control"
+      type="file"
+      id="formFile"
+      hidden
+    />
 
     <button class="btn btn-danger mr-2" @click="deleteProduct">
       Elimiar
@@ -71,6 +88,7 @@ export default {
     return {
       currentProduct: null,
       message: "",
+      selectedFile: null,
     };
   },
   methods: {
@@ -84,9 +102,33 @@ export default {
           console.log(e);
         });
     },
-
+    onFileSelected(e) {
+      console.log(e.target.files[0]);
+      this.selectedFile = e.target.files[0];
+      this.currentProduct.imagen = this.selectedFile;
+    },
+    addImage() {},
+    editImage() {},
+    deleteImage() {
+      let data = {
+        id: this.currentProduct.id,
+        nombre: this.currentProduct.nombre,
+        descripcion: this.currentProduct.descripcion,
+        habilitado: this.currentProduct.habilitado,
+        imagen: null,
+      };
+      ProductDataService.update(this.currentProduct.id, data)
+        .then(response => {
+          console.log(response.data);
+          this.currentProduct.imagen = null;
+          this.message = "Se borro la imagen exitosamente!";
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
     updateHabilitado(status) {
-      var data = {
+      let data = {
         id: this.currentProduct.id,
         nombre: this.currentProduct.nombre,
         descripcion: this.currentProduct.descripcion,

@@ -12,7 +12,7 @@
           <button
             class="btn btn-outline-secondary"
             type="button"
-            @click="searchNombre"
+            @click="searchName"
           >
             Buscar
           </button>
@@ -53,7 +53,13 @@
         </div>
         <div>
           <label><strong>Imagen:</strong></label>
-          <img src="currentProduct.imagen" class="img-fluid" alt="imagen" />
+          <img
+            v-if="currentProduct.imagen"
+            src="currentProduct.imagen"
+            class="img-fluid"
+            alt="imagen"
+          />
+          <label v-else for=""><strong> Sin Imagen</strong></label>
         </div>
         <router-link
           :to="'/productos/' + currentProduct.id"
@@ -73,7 +79,7 @@
 import ProductDataService from "../services/ProductDataService";
 
 export default {
-  name: "tutorials-list",
+  name: "products-list",
   data() {
     return {
       products: [],
