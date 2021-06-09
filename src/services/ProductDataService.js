@@ -21,12 +21,8 @@ class ProductDataService {
     return http.delete(`/productos/${id}`);
   }
 
-  //   deleteAll() {
-  //     return http.delete(`/productos`);
-  //   }
-
-  findByName(title) {
-    return http.get(`/productos?nombre=${title}`);
+  findByName(name) {
+    return http.get(`/productos?nombre=${name}`);
   }
 }
 

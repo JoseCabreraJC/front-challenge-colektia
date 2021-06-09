@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-expand navbar-dark bg-dark">
-      <router-link to="/" class="navbar-brand">Challenge</router-link>
+      <router-link to="/" class="navbar-brand ms-3"
+        >Challenge Colektia</router-link
+      >
       <div class="navbar-nav mr-auto">
         <li class="nav-item">
           <router-link to="/productos" class="nav-link">Productos</router-link>

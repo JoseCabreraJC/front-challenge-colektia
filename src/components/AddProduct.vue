@@ -1,5 +1,5 @@
 <template>
-  <div class="submit-form">
+  <form @submit.prevent="saveProduct" class="submit-form">
     <div v-if="!submitted">
       <div class="form-group">
         <label for="title">Nombre</label>
@@ -49,11 +49,12 @@
 
     <div v-else>
       <h4>Se guardo correctamente!</h4>
-      <button class="btn btn-success" @click="newProduct">Agregar</button>
+      <button class="btn btn-success" @click="newProduct">
+        Agregar otro Producto
+      </button>
     </div>
-  </div>
+  </form>
 </template>
-
 <script>
 import ProductDataService from "../services/ProductDataService";
 // import ImageDataService from "../services/ImageDataService";
@@ -85,6 +86,7 @@ export default {
 
       ProductDataService.create(data)
         .then(response => {
+          console.log(response.data);
           this.producto.id = response.data.id;
           // ImageDataService.create(this.producto.imagen);
           // console.log(response.data);

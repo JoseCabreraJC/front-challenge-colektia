@@ -1,14 +1,14 @@
 <template>
-  <div v-if="currentProduct" class="edit-form">
+  <div v-if="currentProduct" class="edit-form container">
     <h4>Producto</h4>
-    <form>
+    <form @submit="updateProduct">
       <div class="form-group">
         <label for="nombre">Nombre</label>
         <input
           type="text"
           class="form-control"
           id="nombre"
-          v-model="currentProduct.nombre"
+          v-model.trim="currentProduct.nombre"
         />
       </div>
       <div class="form-group">
@@ -17,43 +17,51 @@
           type="text"
           class="form-control"
           id="descripcion"
-          v-model="currentProduct.descripcion"
+          v-model.trim="currentProduct.descripcion"
         />
-      </div>
-
-      <div class="form-group">
-        <label><strong>Estado:</strong></label>
-        {{ currentProduct.habilitado ? "Habilitado" : "No Habilitado" }}
-      </div>
-      <div>
-        <label><strong>Imagen:</strong></label>
-        <img src="currentProduct.imagen" class="img-fluid" alt="imagen" />
-        <label
-          ><strong>{{ currentProduct.imagen }}</strong></label
-        >
       </div>
     </form>
 
-    <button
-      class="btn btn-primary mr-2"
-      v-if="currentProduct.habilitado"
-      @click="updateHabilitado(false)"
-    >
-      DesHabilitar
-    </button>
-    <button v-else class="btn btn-primary mr-2" @click="updateHabilitado(true)">
-      Habilitar
-    </button>
-    <button class="btn btn-warning mr" @click="$refs.file.click()">
-      {{ currentProduct.imagen == null ? "Agregar Imagen" : "Cambiar Imagen" }}
-    </button>
-    <button
-      v-if="currentProduct.imagen"
-      class="btn btn-danger mr"
-      @click="deleteImage"
-    >
-      Borrar Imagen
-    </button>
+    <div class="form-group">
+      <label><strong>Estado:</strong></label>
+      {{ currentProduct.habilitado ? "Habilitado" : "No Habilitado" }}
+    </div>
+    <div class="d-flex justify-content-start">
+      <button
+        class="btn btn-primary mr-2"
+        @click="updateHabilitado(!currentProduct.habilitado)"
+      >
+        {{ currentProduct.habilitado ? "Deshabilitar" : "Habilitar" }}
+      </button>
+    </div>
+    <div>
+      <label><strong>Imagen:</strong></label>
+      <label v-if="currentProduct.imagen == null"> No tiene Imagen</label>
+      <img
+        v-else
+        src="currentProduct.imagen"
+        class="img-fluid"
+        alt="No se puede renderizar la imagen"
+      />
+    </div>
+
+    <div class="row">
+      <div class="btn-group">
+        <button class="btn btn-warning mr p-2 col" @click="$refs.file.click()">
+          {{
+            currentProduct.imagen == null ? "Agregar Imagen" : "Cambiar Imagen"
+          }}
+        </button>
+        <button
+          v-if="currentProduct.imagen"
+          class="btn btn-danger p-2 col"
+          @click="deleteImage"
+        >
+          Borrar Imagen
+        </button>
+      </div>
+    </div>
+    <div class="py-2" />
     <input
       @change="onFileSelected"
       ref="file"
@@ -62,14 +70,21 @@
       id="formFile"
       hidden
     />
-
-    <button class="btn btn-danger mr-2" @click="deleteProduct">
-      Elimiar
-    </button>
-
-    <button type="submit" class="btn btn-success" @click="updateProduct">
-      Actualizar
-    </button>
+    <div class="btn-group d-flex justify-content-center">
+      <div class="row">
+        <button type="submit" class="btn btn-success" @click="updateProduct">
+          Actualizar Producto
+        </button>
+      </div>
+    </div>
+    <div class="py-2" />
+    <div class="btn-group d-flex justify-content-center">
+      <div class="row">
+        <button class="btn btn-danger mr-2" @click="deleteProduct">
+          Eliminar Producto
+        </button>
+      </div>
+    </div>
     <p>{{ message }}</p>
   </div>
 
@@ -106,9 +121,23 @@ export default {
       console.log(e.target.files[0]);
       this.selectedFile = e.target.files[0];
       this.currentProduct.imagen = this.selectedFile;
+
+      let data = {
+        id: this.currentProduct.id,
+        nombre: this.currentProduct.nombre,
+        descripcion: this.currentProduct.descripcion,
+        habilitado: this.currentProduct.habilitado,
+        imagen: this.currentProduct.imagen,
+      };
+      ProductDataService.update(this.currentProduct.id, data)
+        .then(response => {
+          console.log(response.data);
+          this.message = "Se agrego la imagen exitosamente!";
+        })
+        .catch(e => {
+          console.log(e);
+        });
     },
-    addImage() {},
-    editImage() {},
     deleteImage() {
       let data = {
         id: this.currentProduct.id,
@@ -177,7 +206,7 @@ export default {
 
 <style>
 .edit-form {
-  max-width: 300px;
+  max-width: 350px;
   margin: auto;
 }
 </style>

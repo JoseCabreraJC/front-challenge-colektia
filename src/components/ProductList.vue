@@ -7,16 +7,8 @@
           class="form-control"
           placeholder="Buscar por Nombre"
           v-model="nombre"
+          @input="searchName"
         />
-        <div class="input-group-append">
-          <button
-            class="btn btn-outline-secondary"
-            type="button"
-            @click="searchName"
-          >
-            Buscar
-          </button>
-        </div>
       </div>
     </div>
     <div class="col-md-6">
@@ -32,10 +24,6 @@
           {{ product.nombre }}
         </li>
       </ul>
-
-      <button class="m-3 btn btn-sm btn-danger" @click="deleteAllProducts">
-        Eliminar Todos
-      </button>
     </div>
     <div class="col-md-6">
       <div v-if="currentProduct">
@@ -52,14 +40,14 @@
           {{ currentProduct.habilitado ? "Habilitado" : "No Habilitado" }}
         </div>
         <div>
-          <label><strong>Imagen:</strong></label>
+          <label><strong>Imagen: </strong> </label>
           <img
             v-if="currentProduct.imagen"
             src="currentProduct.imagen"
             class="img-fluid"
             alt="imagen"
           />
-          <label v-else for=""><strong> Sin Imagen</strong></label>
+          <label v-else for=""><strong> Sin Imagen</strong> </label>
         </div>
         <router-link
           :to="'/productos/' + currentProduct.id"
@@ -69,7 +57,13 @@
       </div>
       <div v-else>
         <br />
-        <p>Por favor haga click en un Tutorial</p>
+        <p>
+          {{
+            products.length == 0
+              ? "No tiene productos"
+              : "Por favor haga click en un Producto"
+          }}
+        </p>
       </div>
     </div>
   </div>
@@ -93,24 +87,24 @@ export default {
       ProductDataService.getAll()
         .then(response => {
           this.products = response.data;
-          this.products.map(product => {
-            console.log(product.imagen.data);
-            let bytes = new Uint8Array(product.imagen.data);
-            const url = URL.createObjectURL(
-              new Blob([bytes], { type: "image/png" })
-            );
-            // const binary = String.fromCharCode.apply(null, bytes);
-            // let base64String = btoa(binary);
-            console.log(url);
+          // this.products.map(product => {
+          //   console.log(product.imagen.data);
+          //   let bytes = new Uint8Array(product.imagen.data);
+          //   const url = URL.createObjectURL(
+          //     new Blob([bytes], { type: "image/png" })
+          //   );
+          //   // const binary = String.fromCharCode.apply(null, bytes);
+          //   // let base64String = btoa(binary);
+          //   console.log(url);
 
-            // let binary = bytes.reduce(
-            //   (data, b) => data + String.fromCharCode(b),
-            //   ""
-            // );
-            product.imagen = url;
+          //   // let binary = bytes.reduce(
+          //   //   (data, b) => data + String.fromCharCode(b),
+          //   //   ""
+          //   // );
+          //   product.imagen = url;
 
-            // console.log(product.imagen);
-          });
+          //   // console.log(product.imagen);
+          // });
           console.log(response.data);
         })
         .catch(e => {
