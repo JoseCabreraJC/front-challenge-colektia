@@ -17,6 +17,11 @@ const routes = [
     name: "add",
     component: () => import("./components/AddProduct.vue"),
   },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "not-found",
+    component: () => import("./components/PageNotFound.vue"),
+  },
 ];
 
 const router = createRouter({
